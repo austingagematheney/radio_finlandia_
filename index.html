@@ -115,7 +115,7 @@
     <div>
 
         <a href="#" id="rf002" class="transmission transmission-secret">
-            ▶ RF002_PILOTO
+            ▶ HASTA LUEGO JAVIER : RF002
         </a>
 
         <div class="progress-container">
@@ -354,15 +354,15 @@ rf002Link.addEventListener("click", function(e){
     e.preventDefault();
     if(transmission002.paused){
         transmission002.play();
-        rf002Link.textContent = "▌▌ RF002_PILOTO";
+        rf002Link.textContent = "▌▌ HASTA LUEGO JAVIER : RF002";
     } else {
         transmission002.pause();
-        rf002Link.textContent = "▶ RF002_PILOTO";
+        rf002Link.textContent = "▶ HASTA LUEGO JAVIER : RF002";
     }
 });
 
 transmission002.addEventListener("ended", function(){
-    rf002Link.textContent = "▶ RF002_PILOTO";
+    rf002Link.textContent = "▶ HASTA LUEGO JAVIER : RF002";
     rf002Entry.style.transition = "opacity 2s";
     rf002Entry.style.opacity = "0";
     setTimeout(function(){
