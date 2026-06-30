@@ -314,7 +314,7 @@ terminalInput.addEventListener("keydown", function(e){
     terminalInput.value = "";
     terminalInputRow.style.display = "none";
 
-    if(attempt === ACCESS_CODE){
+    if(attempt === ACCESS_CODE.toUpperCase()){
         addLine("", 200);
         addLine("ACCESO CONCEDIDO.", 500);
         addLine("TRANSMISIÓN DESBLOQUEADA.", 900);
