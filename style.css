@@ -1,393 +1,439 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>radio finlandia</title>
-
-<link rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
-<div class="memory-field">
-
-    <img src="photos/01.JPG" class="memory memory1">
-    <img src="photos/02.JPG" class="memory memory2">
-    <img src="photos/03.JPG" class="memory memory3">
-    <img src="photos/04.JPG" class="memory memory4">
-    <img src="photos/05.JPG" class="memory memory5">
-    <img src="photos/06.JPG" class="memory memory6">
-
-</div>
-
-<header>
-
-    <div class="station">
-        radio finlandia
-    </div>
-
-    <div class="live active">
-
-        <span class="live-dot"></span>
-
-        en directo
-
-    </div>
-
-</header>
-
-<section class="sphere-section">
-
-<pre class="sphere" id="sphere">
-        _____
-    .-'     '-.
-  .'           '.
- /               \
-|    .. <span id="rf-trigger">rf</span> ..     |
-|                 |
- \               /
-  '.           .'
-    '-._____.-'
-</pre>
-
-</section>
-
-<!-- TERMINAL OVERLAY -->
-<div class="terminal-overlay" id="terminal-overlay">
-    <div class="terminal-box" id="terminal-box">
-        <div class="terminal-lines" id="terminal-lines"></div>
-        <div class="terminal-input-row" id="terminal-input-row">
-            <span class="terminal-prompt">&gt;&nbsp;</span>
-            <input
-                type="text"
-                id="terminal-input"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
-                spellcheck="false"
-                maxlength="30">
-        </div>
-    </div>
-</div>
-
-<div class="line"></div>
-
-<section class="archive">
-
-<h2>ARCHIVO</h2>
-
-<div class="entry">
-
-    <span class="date">
-        2026.06.06.
-    </span>
-
-    <div>
-
-        <a href="#" id="rf001" class="transmission">
-            ▶ DJ GUANTAZO : RF001
-        </a>
-
-        <div class="progress-container">
-
-            <input
-                type="range"
-                id="rf001-progress"
-                min="0"
-                max="100"
-                value="0">
-
-        </div>
-
-    </div>
-
-</div>
-
-<div class="entry entry-secret" id="rf002-entry">
-
-    <span class="date">——</span>
-
-    <div>
-
-        <a href="#" id="rf002" class="transmission transmission-secret">
-            ▶ RF002_PILOTO
-        </a>
-
-        <div class="progress-container">
-
-            <input
-                type="range"
-                id="rf002-progress"
-                min="0"
-                max="100"
-                value="0">
-
-        </div>
-
-    </div>
-
-</div>
-
-</section>
-
-<script>
-
-/* -------------------- */
-/* AUDIO */
-/* -------------------- */
-
-const transmission001 =
-new Audio("audio/RF001.mp3");
-
-const progress =
-document.getElementById(
-    "rf001-progress"
-);
-const rf001 =
-document.getElementById("rf001");
-
-rf001.addEventListener("click", function(e){
-
-    e.preventDefault();
-
-    if(transmission001.paused){
-
-        transmission001.play();
-
-        rf001.textContent =
-        "▌▌ DJ GUANTAZO : RF001";
-
-    }else{
-
-        transmission001.pause();
-
-        rf001.textContent =
-        "▶ DJ GUANTAZO : RF001";
-    }
-});
-
-transmission001.addEventListener("ended", function(){
-
-    rf001.textContent =
-    "▶ DJ GUANTAZO : RF001";
-});
-transmission001.addEventListener(
-    "timeupdate",
-    function(){
-
-        if(transmission001.duration){
-
-            progress.value =
-            (transmission001.currentTime /
-            transmission001.duration) * 100;
-        }
-    }
-);
-
-progress.addEventListener(
-    "input",
-    function(){
-
-        if(transmission001.duration){
-
-            transmission001.currentTime =
-            (progress.value / 100) *
-            transmission001.duration;
-        }
-    }
-);
-
-/* -------------------- */
-/* SPHERE EXPLOSION */
-/* -------------------- */
-
-const sphere =
-document.getElementById("sphere");
-
-function explodeSphere(){
-
-    sphere.classList.add("explode");
-
-    setTimeout(function(){
-
-        sphere.classList.remove("explode");
-
-    },12000);
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-function scheduleExplosion(){
+body{
 
-    const delay =
-        45000 +
-        Math.random() * 90000;
+    background:#0c0c0c;
 
-    setTimeout(function(){
+    color:#efefef;
 
-        explodeSphere();
+    font-family:
+    "Courier New",
+    monospace;
 
-        scheduleExplosion();
+    font-size:18px;
 
-    },delay);
+    min-height:100vh;
+
+    padding:20px;
+
+    overflow-x:hidden;
+
+    position:relative;
 }
 
-scheduleExplosion();
+/* -------------------- */
+/* FLOATING MEMORIES */
+/* -------------------- */
+
+.memory-field{
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    overflow:hidden;
+
+    z-index:0;
+}
+
+.memory{
+
+    position:absolute;
+
+    width:320px;
+
+    opacity:.08;
+
+    filter:
+    grayscale(100%)
+    blur(2px);
+}
+
+.memory1{
+    top:5%;
+    left:5%;
+    animation:drift1 120s ease-in-out infinite;
+}
+
+.memory2{
+    top:15%;
+    right:8%;
+    animation:drift2 140s ease-in-out infinite;
+}
+
+.memory3{
+    top:55%;
+    left:10%;
+    animation:drift3 160s ease-in-out infinite;
+}
+
+.memory4{
+    top:60%;
+    right:5%;
+    animation:drift1 180s ease-in-out infinite;
+}
+
+.memory5{
+    top:35%;
+    left:40%;
+    animation:drift2 200s ease-in-out infinite;
+}
+
+.memory6{
+    top:75%;
+    left:55%;
+    animation:drift3 220s ease-in-out infinite;
+}
+
+@keyframes drift1{
+
+    50%{
+
+        transform:
+        translate(60px,-40px)
+        rotate(3deg);
+    }
+}
+
+@keyframes drift2{
+
+    50%{
+
+        transform:
+        translate(-70px,50px)
+        rotate(-4deg);
+    }
+}
+
+@keyframes drift3{
+
+    50%{
+
+        transform:
+        translate(50px,70px)
+        rotate(2deg);
+    }
+}
+
+/* -------------------- */
+/* MAIN CONTENT */
+/* -------------------- */
+
+header,
+.sphere-section,
+.archive,
+.line{
+
+    position:relative;
+
+    z-index:1;
+}
+
+header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:80px;
+}
+
+.station{
+
+    letter-spacing:1px;
+}
+
+.live{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.live-dot{
+
+    width:12px;
+    height:12px;
+
+    border-radius:50%;
+
+    background:#fbfbfb;
+
+    box-shadow:
+    0 0 12px #0a0a0a,
+    0 0 24px #0a0a0a;
+}
+
+/* -------------------- */
+/* SPHERE */
+/* -------------------- */
+
+.sphere-section{
+
+    text-align:center;
+
+    margin-bottom:70px;
+}
+
+.sphere{
+
+    display:inline-block;
+
+    font-size:22px;
+
+    line-height:1.1;
+
+    animation:
+    float 10s ease-in-out infinite,
+    breathe 8s ease-in-out infinite;
+}
+
+@keyframes float{
+
+    50%{
+
+        transform:
+        translateY(-10px);
+    }
+}
+
+@keyframes breathe{
+
+    50%{
+
+        scale:1.04;
+    }
+}
+
+/* -------------------- */
+/* DIVIDER */
+/* -------------------- */
+
+.line{
+
+    border-top:2px dashed #d6d6d6;
+
+    margin:80px 0;
+
+    opacity:.7;
+}
+
+/* -------------------- */
+/* ARCHIVE */
+/* -------------------- */
+
+.archive{
+
+    max-width:700px;
+}
+
+.archive h2{
+
+    font-size:18px;
+
+    font-weight:normal;
+
+    margin-bottom:40px;
+
+    letter-spacing:2px;
+}
+
+.entry{
+
+    display:flex;
+
+    gap:40px;
+
+    margin-bottom:40px;
+}
+
+.date{
+
+    width:150px;
+
+    opacity:.7;
+}
+
+.transmission{
+
+    color:white;
+
+    text-decoration:none;
+
+    letter-spacing:1px;
+
+    transition:.2s;
+}
+
+.transmission:hover{
+
+    text-decoration:underline;
+}
+.progress-container{
+
+    margin-top:8px;
+}
+
+#rf001-progress{
+
+    width:180px;
+
+    opacity:.5;
+
+    cursor:pointer;
+}
+
+/* -------------------- */
+/* RF TRIGGER */
+/* -------------------- */
+
+#rf-trigger{
+
+    cursor:pointer;
+}
+
+#rf-trigger:hover{
+
+    color:#fff;
+
+    text-shadow:
+    0 0 6px #fff,
+    0 0 14px #fff;
+}
 
 /* -------------------- */
 /* TERMINAL */
 /* -------------------- */
 
-const ACCESS_CODE = "pafollarhayquefollar";
+.terminal-overlay{
 
-const terminalOverlay  = document.getElementById("terminal-overlay");
-const terminalLines    = document.getElementById("terminal-lines");
-const terminalInput    = document.getElementById("terminal-input");
-const terminalInputRow = document.getElementById("terminal-input-row");
-const rfTrigger        = document.getElementById("rf-trigger");
-const rf002Entry       = document.getElementById("rf002-entry");
-const rf002Link        = document.getElementById("rf002");
-const progress002      = document.getElementById("rf002-progress");
+    display:none;
 
-const transmission002  = new Audio("audio/RF002_PILOTO.wav");
+    position:fixed;
 
-function addLine(text, delay){
-    setTimeout(function(){
-        const div = document.createElement("div");
-        div.textContent = text;
-        terminalLines.appendChild(div);
-    }, delay);
+    inset:0;
+
+    background:rgba(0,0,0,0.9);
+
+    z-index:200;
+
+    align-items:center;
+
+    justify-content:center;
 }
 
-function openTerminal(){
-    terminalLines.innerHTML = "";
-    terminalInput.value = "";
-    terminalInputRow.style.display = "none";
-    terminalOverlay.classList.add("open");
+.terminal-overlay.open{
 
-    addLine("RADIO FINLANDIA // SISTEMA DE ACCESO", 0);
-    addLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", 150);
-    addLine("", 300);
-    addLine("CONEXIÓN ESTABLECIDA...", 500);
-    addLine("", 900);
-    addLine("INTRODUCE CÓDIGO DE TRANSMISIÓN:", 1100);
-    addLine("", 1300);
-
-    setTimeout(function(){
-        terminalInputRow.style.display = "flex";
-        terminalInput.focus();
-    }, 1400);
+    display:flex;
 }
 
-function closeTerminal(){
-    terminalOverlay.classList.remove("open");
+.terminal-box{
+
+    width:520px;
+
+    max-width:90vw;
+
+    padding:36px 40px;
+
+    background:#040404;
+
+    border:1px solid #1c1c1c;
+
+    font-family:"Courier New",monospace;
+
+    font-size:16px;
+
+    color:#5dff5d;
+
+    line-height:1.8;
+
+    cursor:text;
 }
 
-rfTrigger.addEventListener("click", function(e){
-    e.stopPropagation();
-    openTerminal();
-});
+.terminal-lines{
 
-terminalOverlay.addEventListener("click", function(e){
-    if(e.target === terminalOverlay) closeTerminal();
-});
+    min-height:220px;
+}
 
-document.getElementById("terminal-box").addEventListener("click", function(){
-    terminalInput.focus();
-});
+.terminal-input-row{
 
-document.addEventListener("keydown", function(e){
-    if(e.key === "Escape" && terminalOverlay.classList.contains("open")){
-        closeTerminal();
-    }
-});
+    display:flex;
 
-terminalInput.addEventListener("keydown", function(e){
-    if(e.key !== "Enter") return;
-    const attempt = terminalInput.value.trim().toUpperCase();
-    if(!attempt) return;
+    align-items:center;
+}
 
-    addLine("> " + attempt, 0);
-    terminalInput.value = "";
-    terminalInputRow.style.display = "none";
+.terminal-prompt{
 
-    if(attempt === ACCESS_CODE){
-        addLine("", 200);
-        addLine("ACCESO CONCEDIDO.", 500);
-        addLine("TRANSMISIÓN DESBLOQUEADA.", 900);
-        setTimeout(function(){
-            closeTerminal();
-            revealRF002();
-        }, 2200);
-    } else {
-        addLine("", 200);
-        addLine("ACCESO DENEGADO.", 500);
-        addLine("", 900);
-        addLine("INTRODUCE CÓDIGO DE TRANSMISIÓN:", 1100);
-        addLine("", 1300);
-        setTimeout(function(){
-            terminalInputRow.style.display = "flex";
-            terminalInput.focus();
-        }, 1400);
-    }
-});
+    user-select:none;
+}
 
-function revealRF002(){
-    rf002Entry.style.opacity = "0";
-    rf002Entry.style.display = "flex";
-    requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-            rf002Entry.style.transition = "opacity 1.2s";
-            rf002Entry.style.opacity = "1";
-        });
-    });
+#terminal-input{
+
+    flex:1;
+
+    min-width:0;
+
+    background:transparent;
+
+    border:none;
+
+    outline:none;
+
+    color:#5dff5d;
+
+    font-family:"Courier New",monospace;
+
+    font-size:16px;
+
+    caret-color:#5dff5d;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
 }
 
 /* -------------------- */
-/* RF002 PLAYER */
+/* SECRET ENTRY */
 /* -------------------- */
 
-rf002Link.addEventListener("click", function(e){
-    e.preventDefault();
-    if(transmission002.paused){
-        transmission002.play();
-        rf002Link.textContent = "▌▌ RF002_PILOTO";
-    } else {
-        transmission002.pause();
-        rf002Link.textContent = "▶ RF002_PILOTO";
-    }
-});
+.entry-secret{
 
-transmission002.addEventListener("ended", function(){
-    rf002Link.textContent = "▶ RF002_PILOTO";
-    rf002Entry.style.transition = "opacity 2s";
-    rf002Entry.style.opacity = "0";
-    setTimeout(function(){
-        rf002Entry.style.display = "none";
-        rf002Entry.style.transition = "";
-        rf002Entry.style.opacity = "";
-    }, 2000);
-});
+    display:none;
+}
 
-transmission002.addEventListener("timeupdate", function(){
-    if(transmission002.duration){
-        progress002.value =
-            (transmission002.currentTime / transmission002.duration) * 100;
-    }
-});
+.transmission-secret{
 
-progress002.addEventListener("input", function(){
-    if(transmission002.duration){
-        transmission002.currentTime =
-            (progress002.value / 100) * transmission002.duration;
-    }
-});
+    color:#aaa;
 
-</script>
+    text-decoration:none;
 
-</body>
+    letter-spacing:1px;
 
-</html>
+    transition:.2s;
+}
+
+.transmission-secret:hover{
+
+    color:#ccc;
+
+    text-decoration:underline;
+}
+
+#rf002-progress{
+
+    width:180px;
+
+    opacity:.4;
+
+    cursor:pointer;
+}
