@@ -1,294 +1,393 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+<!DOCTYPE html>
+<html lang="es">
 
-body{
+<head>
 
-    background:#0c0c0c;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    color:#efefef;
+<title>radio finlandia</title>
 
-    font-family:
-    "Courier New",
-    monospace;
+<link rel="stylesheet" href="style.css">
 
-    font-size:18px;
+</head>
 
-    min-height:100vh;
+<body>
 
-    padding:20px;
+<div class="memory-field">
 
-    overflow-x:hidden;
+    <img src="photos/01.JPG" class="memory memory1">
+    <img src="photos/02.JPG" class="memory memory2">
+    <img src="photos/03.JPG" class="memory memory3">
+    <img src="photos/04.JPG" class="memory memory4">
+    <img src="photos/05.JPG" class="memory memory5">
+    <img src="photos/06.JPG" class="memory memory6">
 
-    position:relative;
-}
+</div>
+
+<header>
+
+    <div class="station">
+        radio finlandia
+    </div>
+
+    <div class="live active">
+
+        <span class="live-dot"></span>
+
+        en directo
+
+    </div>
+
+</header>
+
+<section class="sphere-section">
+
+<pre class="sphere" id="sphere">
+        _____
+    .-'     '-.
+  .'           '.
+ /               \
+|    .. <span id="rf-trigger">rf</span> ..     |
+|                 |
+ \               /
+  '.           .'
+    '-._____.-'
+</pre>
+
+</section>
+
+<!-- TERMINAL OVERLAY -->
+<div class="terminal-overlay" id="terminal-overlay">
+    <div class="terminal-box" id="terminal-box">
+        <div class="terminal-lines" id="terminal-lines"></div>
+        <div class="terminal-input-row" id="terminal-input-row">
+            <span class="terminal-prompt">&gt;&nbsp;</span>
+            <input
+                type="text"
+                id="terminal-input"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                maxlength="30">
+        </div>
+    </div>
+</div>
+
+<div class="line"></div>
+
+<section class="archive">
+
+<h2>ARCHIVO</h2>
+
+<div class="entry">
+
+    <span class="date">
+        2026.06.06.
+    </span>
+
+    <div>
+
+        <a href="#" id="rf001" class="transmission">
+            ▶ DJ GUANTAZO : RF001
+        </a>
+
+        <div class="progress-container">
+
+            <input
+                type="range"
+                id="rf001-progress"
+                min="0"
+                max="100"
+                value="0">
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="entry entry-secret" id="rf002-entry">
+
+    <span class="date">——</span>
+
+    <div>
+
+        <a href="#" id="rf002" class="transmission transmission-secret">
+            ▶ RF002_PILOTO
+        </a>
+
+        <div class="progress-container">
+
+            <input
+                type="range"
+                id="rf002-progress"
+                min="0"
+                max="100"
+                value="0">
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+<script>
 
 /* -------------------- */
-/* FLOATING MEMORIES */
+/* AUDIO */
 /* -------------------- */
 
-.memory-field{
+const transmission001 =
+new Audio("audio/RF001.mp3");
 
-    position:fixed;
+const progress =
+document.getElementById(
+    "rf001-progress"
+);
+const rf001 =
+document.getElementById("rf001");
 
-    inset:0;
+rf001.addEventListener("click", function(e){
 
-    pointer-events:none;
+    e.preventDefault();
 
-    overflow:hidden;
+    if(transmission001.paused){
 
-    z-index:0;
-}
+        transmission001.play();
 
-.memory{
+        rf001.textContent =
+        "▌▌ DJ GUANTAZO : RF001";
 
-    position:absolute;
+    }else{
 
-    width:320px;
+        transmission001.pause();
 
-    opacity:.08;
-
-    filter:
-    grayscale(100%)
-    blur(2px);
-}
-
-.memory1{
-    top:5%;
-    left:5%;
-    animation:drift1 120s ease-in-out infinite;
-}
-
-.memory2{
-    top:15%;
-    right:8%;
-    animation:drift2 140s ease-in-out infinite;
-}
-
-.memory3{
-    top:55%;
-    left:10%;
-    animation:drift3 160s ease-in-out infinite;
-}
-
-.memory4{
-    top:60%;
-    right:5%;
-    animation:drift1 180s ease-in-out infinite;
-}
-
-.memory5{
-    top:35%;
-    left:40%;
-    animation:drift2 200s ease-in-out infinite;
-}
-
-.memory6{
-    top:75%;
-    left:55%;
-    animation:drift3 220s ease-in-out infinite;
-}
-
-@keyframes drift1{
-
-    50%{
-
-        transform:
-        translate(60px,-40px)
-        rotate(3deg);
+        rf001.textContent =
+        "▶ DJ GUANTAZO : RF001";
     }
-}
+});
 
-@keyframes drift2{
+transmission001.addEventListener("ended", function(){
 
-    50%{
+    rf001.textContent =
+    "▶ DJ GUANTAZO : RF001";
+});
+transmission001.addEventListener(
+    "timeupdate",
+    function(){
 
-        transform:
-        translate(-70px,50px)
-        rotate(-4deg);
+        if(transmission001.duration){
+
+            progress.value =
+            (transmission001.currentTime /
+            transmission001.duration) * 100;
+        }
     }
-}
+);
 
-@keyframes drift3{
+progress.addEventListener(
+    "input",
+    function(){
 
-    50%{
+        if(transmission001.duration){
 
-        transform:
-        translate(50px,70px)
-        rotate(2deg);
+            transmission001.currentTime =
+            (progress.value / 100) *
+            transmission001.duration;
+        }
     }
-}
+);
 
 /* -------------------- */
-/* MAIN CONTENT */
+/* SPHERE EXPLOSION */
 /* -------------------- */
 
-header,
-.sphere-section,
-.archive,
-.line{
+const sphere =
+document.getElementById("sphere");
 
-    position:relative;
+function explodeSphere(){
 
-    z-index:1;
+    sphere.classList.add("explode");
+
+    setTimeout(function(){
+
+        sphere.classList.remove("explode");
+
+    },12000);
 }
 
-header{
+function scheduleExplosion(){
 
-    display:flex;
+    const delay =
+        45000 +
+        Math.random() * 90000;
 
-    justify-content:space-between;
+    setTimeout(function(){
 
-    align-items:center;
+        explodeSphere();
 
-    margin-bottom:80px;
+        scheduleExplosion();
+
+    },delay);
 }
 
-.station{
-
-    letter-spacing:1px;
-}
-
-.live{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-}
-
-.live-dot{
-
-    width:12px;
-    height:12px;
-
-    border-radius:50%;
-
-    background:#fbfbfb;
-
-    box-shadow:
-    0 0 12px #0a0a0a,
-    0 0 24px #0a0a0a;
-}
+scheduleExplosion();
 
 /* -------------------- */
-/* SPHERE */
+/* TERMINAL */
 /* -------------------- */
 
-.sphere-section{
+const ACCESS_CODE = "pafollarhayquefollar";
 
-    text-align:center;
+const terminalOverlay  = document.getElementById("terminal-overlay");
+const terminalLines    = document.getElementById("terminal-lines");
+const terminalInput    = document.getElementById("terminal-input");
+const terminalInputRow = document.getElementById("terminal-input-row");
+const rfTrigger        = document.getElementById("rf-trigger");
+const rf002Entry       = document.getElementById("rf002-entry");
+const rf002Link        = document.getElementById("rf002");
+const progress002      = document.getElementById("rf002-progress");
 
-    margin-bottom:70px;
+const transmission002  = new Audio("audio/RF002_PILOTO.wav");
+
+function addLine(text, delay){
+    setTimeout(function(){
+        const div = document.createElement("div");
+        div.textContent = text;
+        terminalLines.appendChild(div);
+    }, delay);
 }
 
-.sphere{
+function openTerminal(){
+    terminalLines.innerHTML = "";
+    terminalInput.value = "";
+    terminalInputRow.style.display = "none";
+    terminalOverlay.classList.add("open");
 
-    display:inline-block;
+    addLine("RADIO FINLANDIA // SISTEMA DE ACCESO", 0);
+    addLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", 150);
+    addLine("", 300);
+    addLine("CONEXIÓN ESTABLECIDA...", 500);
+    addLine("", 900);
+    addLine("INTRODUCE CÓDIGO DE TRANSMISIÓN:", 1100);
+    addLine("", 1300);
 
-    font-size:22px;
-
-    line-height:1.1;
-
-    animation:
-    float 10s ease-in-out infinite,
-    breathe 8s ease-in-out infinite;
+    setTimeout(function(){
+        terminalInputRow.style.display = "flex";
+        terminalInput.focus();
+    }, 1400);
 }
 
-@keyframes float{
+function closeTerminal(){
+    terminalOverlay.classList.remove("open");
+}
 
-    50%{
+rfTrigger.addEventListener("click", function(e){
+    e.stopPropagation();
+    openTerminal();
+});
 
-        transform:
-        translateY(-10px);
+terminalOverlay.addEventListener("click", function(e){
+    if(e.target === terminalOverlay) closeTerminal();
+});
+
+document.getElementById("terminal-box").addEventListener("click", function(){
+    terminalInput.focus();
+});
+
+document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && terminalOverlay.classList.contains("open")){
+        closeTerminal();
     }
-}
+});
 
-@keyframes breathe{
+terminalInput.addEventListener("keydown", function(e){
+    if(e.key !== "Enter") return;
+    const attempt = terminalInput.value.trim().toUpperCase();
+    if(!attempt) return;
 
-    50%{
+    addLine("> " + attempt, 0);
+    terminalInput.value = "";
+    terminalInputRow.style.display = "none";
 
-        scale:1.04;
+    if(attempt === ACCESS_CODE){
+        addLine("", 200);
+        addLine("ACCESO CONCEDIDO.", 500);
+        addLine("TRANSMISIÓN DESBLOQUEADA.", 900);
+        setTimeout(function(){
+            closeTerminal();
+            revealRF002();
+        }, 2200);
+    } else {
+        addLine("", 200);
+        addLine("ACCESO DENEGADO.", 500);
+        addLine("", 900);
+        addLine("INTRODUCE CÓDIGO DE TRANSMISIÓN:", 1100);
+        addLine("", 1300);
+        setTimeout(function(){
+            terminalInputRow.style.display = "flex";
+            terminalInput.focus();
+        }, 1400);
     }
+});
+
+function revealRF002(){
+    rf002Entry.style.opacity = "0";
+    rf002Entry.style.display = "flex";
+    requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+            rf002Entry.style.transition = "opacity 1.2s";
+            rf002Entry.style.opacity = "1";
+        });
+    });
 }
 
 /* -------------------- */
-/* DIVIDER */
+/* RF002 PLAYER */
 /* -------------------- */
 
-.line{
+rf002Link.addEventListener("click", function(e){
+    e.preventDefault();
+    if(transmission002.paused){
+        transmission002.play();
+        rf002Link.textContent = "▌▌ RF002_PILOTO";
+    } else {
+        transmission002.pause();
+        rf002Link.textContent = "▶ RF002_PILOTO";
+    }
+});
 
-    border-top:2px dashed #d6d6d6;
+transmission002.addEventListener("ended", function(){
+    rf002Link.textContent = "▶ RF002_PILOTO";
+    rf002Entry.style.transition = "opacity 2s";
+    rf002Entry.style.opacity = "0";
+    setTimeout(function(){
+        rf002Entry.style.display = "none";
+        rf002Entry.style.transition = "";
+        rf002Entry.style.opacity = "";
+    }, 2000);
+});
 
-    margin:80px 0;
+transmission002.addEventListener("timeupdate", function(){
+    if(transmission002.duration){
+        progress002.value =
+            (transmission002.currentTime / transmission002.duration) * 100;
+    }
+});
 
-    opacity:.7;
-}
+progress002.addEventListener("input", function(){
+    if(transmission002.duration){
+        transmission002.currentTime =
+            (progress002.value / 100) * transmission002.duration;
+    }
+});
 
-/* -------------------- */
-/* ARCHIVE */
-/* -------------------- */
+</script>
 
-.archive{
+</body>
 
-    max-width:700px;
-}
-
-.archive h2{
-
-    font-size:18px;
-
-    font-weight:normal;
-
-    margin-bottom:40px;
-
-    letter-spacing:2px;
-}
-
-.entry{
-
-    display:flex;
-
-    gap:40px;
-
-    margin-bottom:40px;
-}
-
-.date{
-
-    width:150px;
-
-    opacity:.7;
-}
-
-.transmission{
-
-    color:white;
-
-    text-decoration:none;
-
-    letter-spacing:1px;
-
-    transition:.2s;
-}
-
-.transmission:hover{
-
-    text-decoration:underline;
-}
-.progress-container{
-
-    margin-top:8px;
-}
-
-#rf001-progress{
-
-    width:180px;
-
-    opacity:.5;
-
-    cursor:pointer;
-}
+</html>
