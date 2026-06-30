@@ -48,7 +48,7 @@
     .-'     '-.
   .'           '.
  /               \
-|    .. rf ..     |
+|    .. <span id="rf-trigger">rf</span> ..     |
 |                 |
  \               /
   '.           .'
@@ -56,6 +56,24 @@
 </pre>
 
 </section>
+
+<!-- TERMINAL OVERLAY -->
+<div class="terminal-overlay" id="terminal-overlay">
+    <div class="terminal-box" id="terminal-box">
+        <div class="terminal-lines" id="terminal-lines"></div>
+        <div class="terminal-input-row" id="terminal-input-row">
+            <span class="terminal-prompt">&gt;&nbsp;</span>
+            <input
+                type="text"
+                id="terminal-input"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                maxlength="30">
+        </div>
+    </div>
+</div>
 
 <div class="line"></div>
 
@@ -80,6 +98,31 @@
             <input
                 type="range"
                 id="rf001-progress"
+                min="0"
+                max="100"
+                value="0">
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="entry entry-secret" id="rf002-entry">
+
+    <span class="date">——</span>
+
+    <div>
+
+        <a href="#" id="rf002" class="transmission transmission-secret">
+            ▶ RF002_PILOTO
+        </a>
+
+        <div class="progress-container">
+
+            <input
+                type="range"
+                id="rf002-progress"
                 min="0"
                 max="100"
                 value="0">
@@ -194,8 +237,158 @@ function scheduleExplosion(){
 
 scheduleExplosion();
 
+/* -------------------- */
+/* TERMINAL */
+/* -------------------- */
+
+const ACCESS_CODE = "pafollarhayquefollar";
+
+const terminalOverlay  = document.getElementById("terminal-overlay");
+const terminalLines    = document.getElementById("terminal-lines");
+const terminalInput    = document.getElementById("terminal-input");
+const terminalInputRow = document.getElementById("terminal-input-row");
+const rfTrigger        = document.getElementById("rf-trigger");
+const rf002Entry       = document.getElementById("rf002-entry");
+const rf002Link        = document.getElementById("rf002");
+const progress002      = document.getElementById("rf002-progress");
+
+const transmission002  = new Audio("audio/RF002_PILOTO.wav");
+
+function addLine(text, delay){
+    setTimeout(function(){
+        const div = document.createElement("div");
+        div.textContent = text;
+        terminalLines.appendChild(div);
+    }, delay);
+}
+
+function openTerminal(){
+    terminalLines.innerHTML = "";
+    terminalInput.value = "";
+    terminalInputRow.style.display = "none";
+    terminalOverlay.classList.add("open");
+
+    addLine("RADIO FINLANDIA // SISTEMA DE ACCESO", 0);
+    addLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", 150);
+    addLine("", 300);
+    addLine("CONEXIÓN ESTABLECIDA...", 500);
+    addLine("", 900);
+    addLine("INTRODUCE CÓDIGO DE TRANSMISIÓN:", 1100);
+    addLine("", 1300);
+
+    setTimeout(function(){
+        terminalInputRow.style.display = "flex";
+        terminalInput.focus();
+    }, 1400);
+}
+
+function closeTerminal(){
+    terminalOverlay.classList.remove("open");
+}
+
+rfTrigger.addEventListener("click", function(e){
+    e.stopPropagation();
+    openTerminal();
+});
+
+terminalOverlay.addEventListener("click", function(e){
+    if(e.target === terminalOverlay) closeTerminal();
+});
+
+document.getElementById("terminal-box").addEventListener("click", function(){
+    terminalInput.focus();
+});
+
+document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && terminalOverlay.classList.contains("open")){
+        closeTerminal();
+    }
+});
+
+terminalInput.addEventListener("keydown", function(e){
+    if(e.key !== "Enter") return;
+    const attempt = terminalInput.value.trim().toUpperCase();
+    if(!attempt) return;
+
+    addLine("> " + attempt, 0);
+    terminalInput.value = "";
+    terminalInputRow.style.display = "none";
+
+    if(attempt === ACCESS_CODE){
+        addLine("", 200);
+        addLine("ACCESO CONCEDIDO.", 500);
+        addLine("TRANSMISIÓN DESBLOQUEADA.", 900);
+        setTimeout(function(){
+            closeTerminal();
+            revealRF002();
+        }, 2200);
+    } else {
+        addLine("", 200);
+        addLine("ACCESO DENEGADO.", 500);
+        addLine("", 900);
+        addLine("INTRODUCE CÓDIGO DE TRANSMISIÓN:", 1100);
+        addLine("", 1300);
+        setTimeout(function(){
+            terminalInputRow.style.display = "flex";
+            terminalInput.focus();
+        }, 1400);
+    }
+});
+
+function revealRF002(){
+    rf002Entry.style.opacity = "0";
+    rf002Entry.style.display = "flex";
+    requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+            rf002Entry.style.transition = "opacity 1.2s";
+            rf002Entry.style.opacity = "1";
+        });
+    });
+}
+
+/* -------------------- */
+/* RF002 PLAYER */
+/* -------------------- */
+
+rf002Link.addEventListener("click", function(e){
+    e.preventDefault();
+    if(transmission002.paused){
+        transmission002.play();
+        rf002Link.textContent = "▌▌ RF002_PILOTO";
+    } else {
+        transmission002.pause();
+        rf002Link.textContent = "▶ RF002_PILOTO";
+    }
+});
+
+transmission002.addEventListener("ended", function(){
+    rf002Link.textContent = "▶ RF002_PILOTO";
+    rf002Entry.style.transition = "opacity 2s";
+    rf002Entry.style.opacity = "0";
+    setTimeout(function(){
+        rf002Entry.style.display = "none";
+        rf002Entry.style.transition = "";
+        rf002Entry.style.opacity = "";
+    }, 2000);
+});
+
+transmission002.addEventListener("timeupdate", function(){
+    if(transmission002.duration){
+        progress002.value =
+            (transmission002.currentTime / transmission002.duration) * 100;
+    }
+});
+
+progress002.addEventListener("input", function(){
+    if(transmission002.duration){
+        transmission002.currentTime =
+            (progress002.value / 100) * transmission002.duration;
+    }
+});
+
 </script>
 
 </body>
 
 </html>
+
