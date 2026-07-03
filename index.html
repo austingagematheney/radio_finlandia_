@@ -90,7 +90,7 @@
     <div>
 
         <a href="#" id="rf001" class="transmission">
-            ▶ DJ GUANTAZO : RF001
+            ▶ DJ GUANTAZO: IS THIS THING ON? : RF001
         </a>
 
         <div class="progress-container">
@@ -133,6 +133,33 @@
 
 </div>
 
+<div class="entry">
+
+    <span class="date">
+        2026.07.03.
+    </span>
+
+    <div>
+
+        <a href="#" id="rf003" class="transmission">
+            ▶ COWBOY LOVE : RF003
+        </a>
+
+        <div class="progress-container">
+
+            <input
+                type="range"
+                id="rf003-progress"
+                min="0"
+                max="100"
+                value="0">
+
+        </div>
+
+    </div>
+
+</div>
+
 </section>
 
 <script>
@@ -160,21 +187,21 @@ rf001.addEventListener("click", function(e){
         transmission001.play();
 
         rf001.textContent =
-        "▌▌ DJ GUANTAZO : RF001";
+        "▌▌ DJ GUANTAZO: IS THIS THING ON? : RF001";
 
     }else{
 
         transmission001.pause();
 
         rf001.textContent =
-        "▶ DJ GUANTAZO : RF001";
+        "▶ DJ GUANTAZO: IS THIS THING ON? : RF001";
     }
 });
 
 transmission001.addEventListener("ended", function(){
 
     rf001.textContent =
-    "▶ DJ GUANTAZO : RF001";
+    "▶ DJ GUANTAZO: IS THIS THING ON? : RF001";
 });
 transmission001.addEventListener(
     "timeupdate",
@@ -383,6 +410,43 @@ progress002.addEventListener("input", function(){
     if(transmission002.duration){
         transmission002.currentTime =
             (progress002.value / 100) * transmission002.duration;
+    }
+});
+
+/* -------------------- */
+/* RF003 PLAYER */
+/* -------------------- */
+
+const transmission003 = new Audio("audio/RF003_COWBOY_LOVE.mp3");
+const rf003Link       = document.getElementById("rf003");
+const progress003     = document.getElementById("rf003-progress");
+
+rf003Link.addEventListener("click", function(e){
+    e.preventDefault();
+    if(transmission003.paused){
+        transmission003.play();
+        rf003Link.textContent = "▌▌ COWBOY LOVE : RF003";
+    } else {
+        transmission003.pause();
+        rf003Link.textContent = "▶ COWBOY LOVE : RF003";
+    }
+});
+
+transmission003.addEventListener("ended", function(){
+    rf003Link.textContent = "▶ COWBOY LOVE : RF003";
+});
+
+transmission003.addEventListener("timeupdate", function(){
+    if(transmission003.duration){
+        progress003.value =
+            (transmission003.currentTime / transmission003.duration) * 100;
+    }
+});
+
+progress003.addEventListener("input", function(){
+    if(transmission003.duration){
+        transmission003.currentTime =
+            (progress003.value / 100) * transmission003.duration;
     }
 });
 
