@@ -75,6 +75,14 @@
     </div>
 </div>
 
+<!-- INFO OVERLAY -->
+<div class="info-overlay" id="info-overlay">
+    <div class="terminal-box">
+        <div class="info-content" id="info-content"></div>
+        <div class="info-close">[esc] cerrar</div>
+    </div>
+</div>
+
 <div class="line"></div>
 
 <section class="archive">
@@ -104,6 +112,8 @@
 
         </div>
 
+        <span class="info-trigger" data-src="tracklists/RF001.txt">[info]</span>
+
     </div>
 
 </div>
@@ -128,6 +138,8 @@
                 value="0">
 
         </div>
+
+        <span class="info-trigger" data-src="tracklists/RF002_PILOTO.txt">[info]</span>
 
     </div>
 
@@ -155,6 +167,39 @@
                 value="0">
 
         </div>
+
+        <span class="info-trigger" data-src="tracklists/RF003_COWBOY_LOVE.txt">[info]</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="entry">
+
+    <span class="date">
+        2026.07.05.
+    </span>
+
+    <div>
+
+        <a href="#" id="rf004" class="transmission">
+            ▶ ALLÍ HO TENS : SCAM : RF004
+        </a>
+
+        <div class="progress-container">
+
+            <input
+                type="range"
+                id="rf004-progress"
+                min="0"
+                max="100"
+                value="0">
+
+        </div>
+
+        <span class="info-trigger" data-src="tracklists/RF004_ALLI_HO_TENS.txt">[info]</span>
 
     </div>
 
@@ -448,6 +493,77 @@ progress003.addEventListener("input", function(){
         transmission003.currentTime =
             (progress003.value / 100) * transmission003.duration;
     }
+});
+
+/* -------------------- */
+/* RF004 PLAYER */
+/* -------------------- */
+
+const transmission004 = new Audio("audio/RF004_ALLI_HO_TENS.mp3");
+const rf004Link       = document.getElementById("rf004");
+const progress004     = document.getElementById("rf004-progress");
+
+rf004Link.addEventListener("click", function(e){
+    e.preventDefault();
+    if(transmission004.paused){
+        transmission004.play();
+        rf004Link.textContent = "▌▌ ALLÍ HO TENS : SCAM : RF004";
+    } else {
+        transmission004.pause();
+        rf004Link.textContent = "▶ ALLÍ HO TENS : SCAM : RF004";
+    }
+});
+
+transmission004.addEventListener("ended", function(){
+    rf004Link.textContent = "▶ ALLÍ HO TENS : SCAM : RF004";
+});
+
+transmission004.addEventListener("timeupdate", function(){
+    if(transmission004.duration){
+        progress004.value =
+            (transmission004.currentTime / transmission004.duration) * 100;
+    }
+});
+
+progress004.addEventListener("input", function(){
+    if(transmission004.duration){
+        transmission004.currentTime =
+            (progress004.value / 100) * transmission004.duration;
+    }
+});
+
+/* -------------------- */
+/* INFO OVERLAY */
+/* -------------------- */
+
+const infoOverlay  = document.getElementById("info-overlay");
+const infoContent  = document.getElementById("info-content");
+
+document.querySelectorAll(".info-trigger").forEach(function(trigger){
+    trigger.addEventListener("click", function(){
+        const src = trigger.getAttribute("data-src");
+        infoContent.textContent = "cargando...";
+        infoOverlay.classList.add("open");
+        fetch(src)
+            .then(function(res){
+                if(!res.ok) throw new Error("not found");
+                return res.text();
+            })
+            .then(function(text){
+                infoContent.textContent = text;
+            })
+            .catch(function(){
+                infoContent.textContent = "// archivo no encontrado //";
+            });
+    });
+});
+
+infoOverlay.addEventListener("click", function(e){
+    if(e.target === infoOverlay) infoOverlay.classList.remove("open");
+});
+
+document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") infoOverlay.classList.remove("open");
 });
 
 </script>
