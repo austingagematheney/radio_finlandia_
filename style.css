@@ -279,19 +279,6 @@ header{
 
     text-decoration:underline;
 }
-.progress-container{
-
-    margin-top:8px;
-}
-
-#rf001-progress{
-
-    width:180px;
-
-    opacity:.5;
-
-    cursor:pointer;
-}
 
 /* -------------------- */
 /* RF TRIGGER */
@@ -429,13 +416,86 @@ header{
     text-decoration:underline;
 }
 
-#rf002-progress{
+/* -------------------- */
+/* GLOBAL PROGRESS BAR */
+/* -------------------- */
 
-    width:180px;
+.global-progress{
 
-    opacity:.4;
+    position:fixed;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:28px;
+
+    background:rgba(255,255,255,.06);
+
+    z-index:150;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    touch-action:none;
 
     cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    transition:opacity .3s;
+}
+
+.global-progress.active{
+
+    opacity:1;
+
+    pointer-events:auto;
+}
+
+.global-progress-fill{
+
+    position:absolute;
+
+    left:0;
+    top:0;
+    bottom:0;
+
+    z-index:1;
+
+    width:0%;
+
+    background:#efd13b;
+
+    transition:width .1s linear;
+}
+
+.global-progress-time{
+
+    position:relative;
+
+    z-index:2;
+
+    margin-left:auto;
+
+    margin-right:12px;
+
+    padding:2px 8px;
+
+    background:rgba(0,0,0,.4);
+
+    color:#efefef;
+
+    font-family:"Courier New",monospace;
+
+    font-size:12px;
+
+    letter-spacing:1px;
+
+    pointer-events:none;
 }
 
 /* -------------------- */
