@@ -14,6 +14,11 @@
 
 <body>
 
+<div class="global-progress" id="global-progress">
+    <div class="global-progress-fill" id="global-progress-fill"></div>
+    <div class="global-progress-time" id="global-progress-time">0:00</div>
+</div>
+
 <div class="memory-field">
 
     <img src="photos/01.JPG" class="memory memory1">
@@ -101,17 +106,6 @@
             ▶ DJ GUANTAZO: IS THIS THING ON? : RF001
         </a>
 
-        <div class="progress-container">
-
-            <input
-                type="range"
-                id="rf001-progress"
-                min="0"
-                max="100"
-                value="0">
-
-        </div>
-
         <span class="info-trigger" data-src="tracklists/RF001.txt">[info]</span>
 
     </div>
@@ -127,17 +121,6 @@
         <a href="#" id="rf002" class="transmission transmission-secret">
             ▶ HASTA LUEGO JAVIER : RF002
         </a>
-
-        <div class="progress-container">
-
-            <input
-                type="range"
-                id="rf002-progress"
-                min="0"
-                max="100"
-                value="0">
-
-        </div>
 
         <span class="info-trigger" data-src="tracklists/RF002_PILOTO.txt">[info]</span>
 
@@ -156,17 +139,6 @@
         <a href="#" id="rf003" class="transmission">
             ▶ COWBOY LOVE : RF003
         </a>
-
-        <div class="progress-container">
-
-            <input
-                type="range"
-                id="rf003-progress"
-                min="0"
-                max="100"
-                value="0">
-
-        </div>
 
         <span class="info-trigger" data-src="tracklists/RF003_COWBOY_LOVE.txt">[info]</span>
 
@@ -188,18 +160,25 @@
             ▶ ALLÍ HO TENS : SCAM : RF004
         </a>
 
-        <div class="progress-container">
-
-            <input
-                type="range"
-                id="rf004-progress"
-                min="0"
-                max="100"
-                value="0">
-
-        </div>
-
         <span class="info-trigger" data-src="tracklists/RF004_ALLI_HO_TENS.txt">[info]</span>
+
+    </div>
+
+</div>
+
+<div class="entry">
+
+    <span class="date">
+        2026.07.15.
+    </span>
+
+    <div>
+
+        <a href="#" id="rf005" class="transmission">
+            ▶ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA : RF005
+        </a>
+
+        <span class="info-trigger" data-src="tracklists/RF005_CORUNA.txt">[info]</span>
 
     </div>
 
@@ -210,26 +189,119 @@
 <script>
 
 /* -------------------- */
+/* GLOBAL PROGRESS BAR */
+/* -------------------- */
+
+const globalProgress     = document.getElementById("global-progress");
+const globalProgressFill = document.getElementById("global-progress-fill");
+const globalProgressTime = document.getElementById("global-progress-time");
+
+let activeTransmission = null;
+let activeToggle       = null;
+
+function formatTime(seconds){
+    seconds = Math.max(0, Math.floor(seconds || 0));
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+}
+
+function showGlobalProgress(){
+    globalProgress.classList.add("active");
+}
+
+function hideGlobalProgress(){
+    globalProgress.classList.remove("active");
+    globalProgressFill.style.width = "0%";
+    globalProgressTime.textContent = "0:00";
+    activeTransmission = null;
+    activeToggle = null;
+}
+
+function updateGlobalProgress(transmission){
+    if(transmission.duration){
+        globalProgressFill.style.width =
+            (transmission.currentTime / transmission.duration) * 100 + "%";
+    }
+    globalProgressTime.textContent = formatTime(transmission.currentTime);
+}
+
+/* -------------------- */
+/* GLOBAL PROGRESS BAR SCRUBBING */
+/* -------------------- */
+
+let isScrubbing  = false;
+let scrubMoved   = false;
+let scrubStartX  = 0;
+
+function seekFromClientX(clientX){
+    if(!activeTransmission || !activeTransmission.duration) return;
+    const rect  = globalProgress.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+    activeTransmission.currentTime = ratio * activeTransmission.duration;
+    updateGlobalProgress(activeTransmission);
+}
+
+function scrubStart(clientX){
+    if(!activeTransmission) return;
+    isScrubbing = true;
+    scrubMoved = false;
+    scrubStartX = clientX;
+    seekFromClientX(clientX);
+}
+
+function scrubMove(clientX){
+    if(!isScrubbing) return;
+    if(Math.abs(clientX - scrubStartX) > 6) scrubMoved = true;
+    seekFromClientX(clientX);
+}
+
+function scrubEnd(){
+    if(!isScrubbing) return;
+    isScrubbing = false;
+    if(!scrubMoved && activeToggle) activeToggle();
+}
+
+globalProgress.addEventListener("mousedown", function(e){
+    scrubStart(e.clientX);
+});
+document.addEventListener("mousemove", function(e){
+    scrubMove(e.clientX);
+});
+document.addEventListener("mouseup", function(){
+    scrubEnd();
+});
+
+globalProgress.addEventListener("touchstart", function(e){
+    scrubStart(e.touches[0].clientX);
+}, {passive:true});
+document.addEventListener("touchmove", function(e){
+    if(isScrubbing) scrubMove(e.touches[0].clientX);
+}, {passive:true});
+document.addEventListener("touchend", function(){
+    scrubEnd();
+});
+
+/* -------------------- */
 /* AUDIO */
 /* -------------------- */
 
 const transmission001 =
 new Audio("audio/RF001.mp3");
 
-const progress =
-document.getElementById(
-    "rf001-progress"
-);
 const rf001 =
 document.getElementById("rf001");
 
-rf001.addEventListener("click", function(e){
+function playPauseRF001(){
 
-    e.preventDefault();
+    activeTransmission = transmission001;
+    activeToggle = playPauseRF001;
 
     if(transmission001.paused){
 
         transmission001.play();
+
+        showGlobalProgress();
 
         rf001.textContent =
         "▌▌ DJ GUANTAZO: IS THIS THING ON? : RF001";
@@ -241,9 +313,18 @@ rf001.addEventListener("click", function(e){
         rf001.textContent =
         "▶ DJ GUANTAZO: IS THIS THING ON? : RF001";
     }
+}
+
+rf001.addEventListener("click", function(e){
+
+    e.preventDefault();
+
+    playPauseRF001();
 });
 
 transmission001.addEventListener("ended", function(){
+
+    hideGlobalProgress();
 
     rf001.textContent =
     "▶ DJ GUANTAZO: IS THIS THING ON? : RF001";
@@ -251,26 +332,7 @@ transmission001.addEventListener("ended", function(){
 transmission001.addEventListener(
     "timeupdate",
     function(){
-
-        if(transmission001.duration){
-
-            progress.value =
-            (transmission001.currentTime /
-            transmission001.duration) * 100;
-        }
-    }
-);
-
-progress.addEventListener(
-    "input",
-    function(){
-
-        if(transmission001.duration){
-
-            transmission001.currentTime =
-            (progress.value / 100) *
-            transmission001.duration;
-        }
+        updateGlobalProgress(transmission001);
     }
 );
 
@@ -322,7 +384,6 @@ const terminalInputRow = document.getElementById("terminal-input-row");
 const rfTrigger        = document.getElementById("rf-trigger");
 const rf002Entry       = document.getElementById("rf002-entry");
 const rf002Link        = document.getElementById("rf002");
-const progress002      = document.getElementById("rf002-progress");
 
 const transmission002  = new Audio("audio/RF002_PILOTO.mp3");
 
@@ -422,18 +483,27 @@ function revealRF002(){
 /* RF002 PLAYER */
 /* -------------------- */
 
-rf002Link.addEventListener("click", function(e){
-    e.preventDefault();
+function playPauseRF002(){
+    activeTransmission = transmission002;
+    activeToggle = playPauseRF002;
+
     if(transmission002.paused){
         transmission002.play();
+        showGlobalProgress();
         rf002Link.textContent = "▌▌ HASTA LUEGO JAVIER : RF002";
     } else {
         transmission002.pause();
         rf002Link.textContent = "▶ HASTA LUEGO JAVIER : RF002";
     }
+}
+
+rf002Link.addEventListener("click", function(e){
+    e.preventDefault();
+    playPauseRF002();
 });
 
 transmission002.addEventListener("ended", function(){
+    hideGlobalProgress();
     rf002Link.textContent = "▶ HASTA LUEGO JAVIER : RF002";
     rf002Entry.style.transition = "opacity 2s";
     rf002Entry.style.opacity = "0";
@@ -445,17 +515,7 @@ transmission002.addEventListener("ended", function(){
 });
 
 transmission002.addEventListener("timeupdate", function(){
-    if(transmission002.duration){
-        progress002.value =
-            (transmission002.currentTime / transmission002.duration) * 100;
-    }
-});
-
-progress002.addEventListener("input", function(){
-    if(transmission002.duration){
-        transmission002.currentTime =
-            (progress002.value / 100) * transmission002.duration;
-    }
+    updateGlobalProgress(transmission002);
 });
 
 /* -------------------- */
@@ -464,35 +524,33 @@ progress002.addEventListener("input", function(){
 
 const transmission003 = new Audio("audio/RF003_COWBOY_LOVE.mp3");
 const rf003Link       = document.getElementById("rf003");
-const progress003     = document.getElementById("rf003-progress");
 
-rf003Link.addEventListener("click", function(e){
-    e.preventDefault();
+function playPauseRF003(){
+    activeTransmission = transmission003;
+    activeToggle = playPauseRF003;
+
     if(transmission003.paused){
         transmission003.play();
+        showGlobalProgress();
         rf003Link.textContent = "▌▌ COWBOY LOVE : RF003";
     } else {
         transmission003.pause();
         rf003Link.textContent = "▶ COWBOY LOVE : RF003";
     }
+}
+
+rf003Link.addEventListener("click", function(e){
+    e.preventDefault();
+    playPauseRF003();
 });
 
 transmission003.addEventListener("ended", function(){
+    hideGlobalProgress();
     rf003Link.textContent = "▶ COWBOY LOVE : RF003";
 });
 
 transmission003.addEventListener("timeupdate", function(){
-    if(transmission003.duration){
-        progress003.value =
-            (transmission003.currentTime / transmission003.duration) * 100;
-    }
-});
-
-progress003.addEventListener("input", function(){
-    if(transmission003.duration){
-        transmission003.currentTime =
-            (progress003.value / 100) * transmission003.duration;
-    }
+    updateGlobalProgress(transmission003);
 });
 
 /* -------------------- */
@@ -501,35 +559,68 @@ progress003.addEventListener("input", function(){
 
 const transmission004 = new Audio("audio/RF004_ALLI_HO_TENS.mp3");
 const rf004Link       = document.getElementById("rf004");
-const progress004     = document.getElementById("rf004-progress");
 
-rf004Link.addEventListener("click", function(e){
-    e.preventDefault();
+function playPauseRF004(){
+    activeTransmission = transmission004;
+    activeToggle = playPauseRF004;
+
     if(transmission004.paused){
         transmission004.play();
+        showGlobalProgress();
         rf004Link.textContent = "▌▌ ALLÍ HO TENS : SCAM : RF004";
     } else {
         transmission004.pause();
         rf004Link.textContent = "▶ ALLÍ HO TENS : SCAM : RF004";
     }
+}
+
+rf004Link.addEventListener("click", function(e){
+    e.preventDefault();
+    playPauseRF004();
 });
 
 transmission004.addEventListener("ended", function(){
+    hideGlobalProgress();
     rf004Link.textContent = "▶ ALLÍ HO TENS : SCAM : RF004";
 });
 
 transmission004.addEventListener("timeupdate", function(){
-    if(transmission004.duration){
-        progress004.value =
-            (transmission004.currentTime / transmission004.duration) * 100;
-    }
+    updateGlobalProgress(transmission004);
 });
 
-progress004.addEventListener("input", function(){
-    if(transmission004.duration){
-        transmission004.currentTime =
-            (progress004.value / 100) * transmission004.duration;
+/* -------------------- */
+/* RF005 PLAYER */
+/* -------------------- */
+
+const transmission005 = new Audio("audio/RF005_CORUNA.mp3");
+const rf005Link       = document.getElementById("rf005");
+
+function playPauseRF005(){
+    activeTransmission = transmission005;
+    activeToggle = playPauseRF005;
+
+    if(transmission005.paused){
+        transmission005.play();
+        showGlobalProgress();
+        rf005Link.textContent = "▌▌ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA : RF005";
+    } else {
+        transmission005.pause();
+        rf005Link.textContent = "▶ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA : RF005";
     }
+}
+
+rf005Link.addEventListener("click", function(e){
+    e.preventDefault();
+    playPauseRF005();
+});
+
+transmission005.addEventListener("ended", function(){
+    hideGlobalProgress();
+    rf005Link.textContent = "▶ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA : RF005";
+});
+
+transmission005.addEventListener("timeupdate", function(){
+    updateGlobalProgress(transmission005);
 });
 
 /* -------------------- */
