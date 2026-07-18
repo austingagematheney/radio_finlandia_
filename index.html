@@ -657,14 +657,14 @@ function playPauseRF006(){
         showGlobalProgress();
         rf006Link.textContent = "▌▌ DJ Guantazo : Oh this things on alright (whose gonna fill their shoes?) : RF006";
     } else {
-        transmission005.pause();
-        rf005Link.textContent = "▶ DJ Guantazo : Oh this things on alright (whose gonna fill their shoes?) : RF006";
+        transmission006.pause();
+        rf006Link.textContent = "▶ DJ Guantazo : Oh this things on alright (whose gonna fill their shoes?) : RF006";
     }
 }
 
 rf006Link.addEventListener("click", function(e){
     e.preventDefault();
-    playPauseRF005();
+    playPauseRF006();
 });
 
 transmission006.addEventListener("ended", function(){
