@@ -184,6 +184,24 @@
 
 </div>
 
+<div class="entry">
+
+    <span class="date">
+        2026.07.18.
+    </span>
+
+    <div>
+
+        <a href="#" id="rf006" class="transmission">
+            ▶ DJ Guantazo : Oh this things on alright (whose gonna fill their shoes) : RF006
+        </a>
+
+        <span class="info-trigger" data-src="tracklists/RF006_FILL_SHOES.txt">[info]</span>
+
+    </div>
+
+</div>
+
 </section>
 
 <script>
@@ -621,6 +639,41 @@ transmission005.addEventListener("ended", function(){
 
 transmission005.addEventListener("timeupdate", function(){
     updateGlobalProgress(transmission005);
+});
+
+/* -------------------- */
+/* RF006 PLAYER */
+/* -------------------- */
+
+const transmission006 = new Audio("audio/RF006_FILL_SHOES.mp3");
+const rf006Link       = document.getElementById("rf006");
+
+function playPauseRF006(){
+    activeTransmission = transmission006;
+    activeToggle = playPauseRF006;
+
+    if(transmission006.paused){
+        transmission006.play();
+        showGlobalProgress();
+        rf006Link.textContent = "▌▌ DJ Guantazo : Oh this things on alright (whose gonna fill their shoes?) : RF006";
+    } else {
+        transmission005.pause();
+        rf005Link.textContent = "▶ DJ Guantazo : Oh this things on alright (whose gonna fill their shoes?) : RF006";
+    }
+}
+
+rf006Link.addEventListener("click", function(e){
+    e.preventDefault();
+    playPauseRF005();
+});
+
+transmission006.addEventListener("ended", function(){
+    hideGlobalProgress();
+    rf006Link.textContent = "▶ DJ Guantazo : Oh this things on alright (whose gonna fill their shoes?) : RF006";
+});
+
+transmission006.addEventListener("timeupdate", function(){
+    updateGlobalProgress(transmission006);
 });
 
 /* -------------------- */
