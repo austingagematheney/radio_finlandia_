@@ -11,8 +11,9 @@ body{
     color:#efefef;
 
     font-family:
-    "Courier New",
-    monospace;
+    Arial,
+    Helvetica,
+    sans-serif;
 
     font-size:18px;
 
@@ -248,20 +249,43 @@ header{
     letter-spacing:2px;
 }
 
-.entry{
+.entry,
+.entry-head{
 
-    display:flex;
+    display:grid;
+
+    grid-template-columns:150px 60px 1fr;
 
     gap:40px;
+
+    align-items:start;
 
     margin-bottom:40px;
 }
 
 .date{
 
-    width:150px;
+    opacity:.7;
+}
+
+.rf-id{
 
     opacity:.7;
+
+    letter-spacing:1px;
+}
+
+.entry-head{
+
+    opacity:.4;
+
+    font-size:14px;
+
+    text-transform:uppercase;
+
+    letter-spacing:2px;
+
+    margin-bottom:20px;
 }
 
 .transmission{

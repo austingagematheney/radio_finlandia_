@@ -94,16 +94,28 @@
 
 <h2>ARCHIVO</h2>
 
+<div class="entry entry-head">
+
+    <span class="date">fecha</span>
+
+    <span class="rf-id">#</span>
+
+    <div></div>
+
+</div>
+
 <div class="entry">
 
     <span class="date">
         2026.06.06.
     </span>
 
+    <span class="rf-id">RF001</span>
+
     <div>
 
         <a href="#" id="rf001" class="transmission">
-            ▶ DJ GUANTAZO: IS THIS THING ON? : RF001
+            ▶ DJ GUANTAZO: IS THIS THING ON?
         </a>
 
         <span class="info-trigger" data-src="tracklists/RF001.txt">[info]</span>
@@ -116,10 +128,12 @@
 
     <span class="date">——</span>
 
+    <span class="rf-id">RF002</span>
+
     <div>
 
         <a href="#" id="rf002" class="transmission transmission-secret">
-            ▶ HASTA LUEGO JAVIER : RF002
+            ▶ HASTA LUEGO JAVIER
         </a>
 
         <span class="info-trigger" data-src="tracklists/RF002_PILOTO.txt">[info]</span>
@@ -134,15 +148,15 @@
         2026.07.03.
     </span>
 
+    <span class="rf-id">RF003</span>
+
     <div>
 
         <a href="#" id="rf003" class="transmission">
-            ▶ COWBOY LOVE : RF003
+            ▶ COWBOY LOVE
         </a>
 
         <span class="info-trigger" data-src="tracklists/RF003_COWBOY_LOVE.txt">[info]</span>
-
-        </div>
 
     </div>
 
@@ -154,10 +168,12 @@
         2026.07.05.
     </span>
 
+    <span class="rf-id">RF004</span>
+
     <div>
 
         <a href="#" id="rf004" class="transmission">
-            ▶ ALLÍ HO TENS : SCAM : RF004
+            ▶ ALLÍ HO TENS : SCAM
         </a>
 
         <span class="info-trigger" data-src="tracklists/RF004_ALLI_HO_TENS.txt">[info]</span>
@@ -172,10 +188,12 @@
         2026.07.15.
     </span>
 
+    <span class="rf-id">RF005</span>
+
     <div>
 
         <a href="#" id="rf005" class="transmission">
-            ▶ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA : RF005
+            ▶ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA
         </a>
 
         <span class="info-trigger" data-src="tracklists/RF005_CORUNA.txt">[info]</span>
@@ -190,13 +208,35 @@
         2026.07.18.
     </span>
 
+    <span class="rf-id">RF006</span>
+
     <div>
 
         <a href="#" id="rf006" class="transmission">
-            ▶ DJ Guantazo : Oh this things on alright (whose gonna fill their shoes) : RF006
+            ▶ DJ GUANTAZO : OH THIS THINGS ON ALRIGHT (WHOSE GONNA FILL THEIR SHOES)
         </a>
 
         <span class="info-trigger" data-src="tracklists/RF006_FILL_SHOES.txt">[info]</span>
+
+    </div>
+
+</div>
+
+<div class="entry">
+
+    <span class="date">
+        2026.07.23.
+    </span>
+
+    <span class="rf-id">RF007</span>
+
+    <div>
+
+        <a href="#" id="rf007" class="transmission">
+            ▶ ALLÍ HO TENS : BIRRAS AMB AMICS
+        </a>
+
+        <span class="info-trigger" data-src="tracklists/RF007_ALLI_HO_TENS.txt">[info]</span>
 
     </div>
 
@@ -322,14 +362,14 @@ function playPauseRF001(){
         showGlobalProgress();
 
         rf001.textContent =
-        "▌▌ DJ GUANTAZO: IS THIS THING ON? : RF001";
+        "▌▌ DJ GUANTAZO: IS THIS THING ON?";
 
     }else{
 
         transmission001.pause();
 
         rf001.textContent =
-        "▶ DJ GUANTAZO: IS THIS THING ON? : RF001";
+        "▶ DJ GUANTAZO: IS THIS THING ON?";
     }
 }
 
@@ -345,7 +385,7 @@ transmission001.addEventListener("ended", function(){
     hideGlobalProgress();
 
     rf001.textContent =
-    "▶ DJ GUANTAZO: IS THIS THING ON? : RF001";
+    "▶ DJ GUANTAZO: IS THIS THING ON?";
 });
 transmission001.addEventListener(
     "timeupdate",
@@ -488,7 +528,7 @@ terminalInput.addEventListener("keydown", function(e){
 
 function revealRF002(){
     rf002Entry.style.opacity = "0";
-    rf002Entry.style.display = "flex";
+    rf002Entry.style.display = "grid";
     requestAnimationFrame(function(){
         requestAnimationFrame(function(){
             rf002Entry.style.transition = "opacity 1.2s";
@@ -508,10 +548,10 @@ function playPauseRF002(){
     if(transmission002.paused){
         transmission002.play();
         showGlobalProgress();
-        rf002Link.textContent = "▌▌ HASTA LUEGO JAVIER : RF002";
+        rf002Link.textContent = "▌▌ HASTA LUEGO JAVIER";
     } else {
         transmission002.pause();
-        rf002Link.textContent = "▶ HASTA LUEGO JAVIER : RF002";
+        rf002Link.textContent = "▶ HASTA LUEGO JAVIER";
     }
 }
 
@@ -522,7 +562,7 @@ rf002Link.addEventListener("click", function(e){
 
 transmission002.addEventListener("ended", function(){
     hideGlobalProgress();
-    rf002Link.textContent = "▶ HASTA LUEGO JAVIER : RF002";
+    rf002Link.textContent = "▶ HASTA LUEGO JAVIER";
     rf002Entry.style.transition = "opacity 2s";
     rf002Entry.style.opacity = "0";
     setTimeout(function(){
@@ -550,10 +590,10 @@ function playPauseRF003(){
     if(transmission003.paused){
         transmission003.play();
         showGlobalProgress();
-        rf003Link.textContent = "▌▌ COWBOY LOVE : RF003";
+        rf003Link.textContent = "▌▌ COWBOY LOVE";
     } else {
         transmission003.pause();
-        rf003Link.textContent = "▶ COWBOY LOVE : RF003";
+        rf003Link.textContent = "▶ COWBOY LOVE";
     }
 }
 
@@ -564,7 +604,7 @@ rf003Link.addEventListener("click", function(e){
 
 transmission003.addEventListener("ended", function(){
     hideGlobalProgress();
-    rf003Link.textContent = "▶ COWBOY LOVE : RF003";
+    rf003Link.textContent = "▶ COWBOY LOVE";
 });
 
 transmission003.addEventListener("timeupdate", function(){
@@ -585,10 +625,10 @@ function playPauseRF004(){
     if(transmission004.paused){
         transmission004.play();
         showGlobalProgress();
-        rf004Link.textContent = "▌▌ ALLÍ HO TENS : SCAM : RF004";
+        rf004Link.textContent = "▌▌ ALLÍ HO TENS : SCAM";
     } else {
         transmission004.pause();
-        rf004Link.textContent = "▶ ALLÍ HO TENS : SCAM : RF004";
+        rf004Link.textContent = "▶ ALLÍ HO TENS : SCAM";
     }
 }
 
@@ -599,7 +639,7 @@ rf004Link.addEventListener("click", function(e){
 
 transmission004.addEventListener("ended", function(){
     hideGlobalProgress();
-    rf004Link.textContent = "▶ ALLÍ HO TENS : SCAM : RF004";
+    rf004Link.textContent = "▶ ALLÍ HO TENS : SCAM";
 });
 
 transmission004.addEventListener("timeupdate", function(){
@@ -620,10 +660,10 @@ function playPauseRF005(){
     if(transmission005.paused){
         transmission005.play();
         showGlobalProgress();
-        rf005Link.textContent = "▌▌ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA : RF005";
+        rf005Link.textContent = "▌▌ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA";
     } else {
         transmission005.pause();
-        rf005Link.textContent = "▶ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA : RF005";
+        rf005Link.textContent = "▶ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA";
     }
 }
 
@@ -634,7 +674,7 @@ rf005Link.addEventListener("click", function(e){
 
 transmission005.addEventListener("ended", function(){
     hideGlobalProgress();
-    rf005Link.textContent = "▶ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA : RF005";
+    rf005Link.textContent = "▶ HASTA LUEGO JAVIER : CAP. I ~ (L(A)) CORUÑA";
 });
 
 transmission005.addEventListener("timeupdate", function(){
@@ -655,10 +695,10 @@ function playPauseRF006(){
     if(transmission006.paused){
         transmission006.play();
         showGlobalProgress();
-        rf006Link.textContent = "▌▌ DJ Guantazo : Oh this things on alright (whose gonna fill their shoes?) : RF006";
+        rf006Link.textContent = "▌▌ DJ GUANTAZO : OH THIS THINGS ON ALRIGHT (WHOSE GONNA FILL THEIR SHOES?)";
     } else {
         transmission006.pause();
-        rf006Link.textContent = "▶ DJ Guantazo : Oh this things on alright (whose gonna fill their shoes?) : RF006";
+        rf006Link.textContent = "▶ DJ GUANTAZO : OH THIS THINGS ON ALRIGHT (WHOSE GONNA FILL THEIR SHOES?)";
     }
 }
 
@@ -669,11 +709,46 @@ rf006Link.addEventListener("click", function(e){
 
 transmission006.addEventListener("ended", function(){
     hideGlobalProgress();
-    rf006Link.textContent = "▶ DJ Guantazo : Oh this things on alright (whose gonna fill their shoes?) : RF006";
+    rf006Link.textContent = "▶ DJ GUANTAZO : OH THIS THINGS ON ALRIGHT (WHOSE GONNA FILL THEIR SHOES?)";
 });
 
 transmission006.addEventListener("timeupdate", function(){
     updateGlobalProgress(transmission006);
+});
+
+/* -------------------- */
+/* RF007 PLAYER */
+/* -------------------- */
+
+const transmission007 = new Audio("audio/RF007_ALLI_HO_TENS.mp3");
+const rf007Link       = document.getElementById("rf007");
+
+function playPauseRF007(){
+    activeTransmission = transmission007;
+    activeToggle = playPauseRF007;
+
+    if(transmission007.paused){
+        transmission007.play();
+        showGlobalProgress();
+        rf007Link.textContent = "▌▌ ALLÍ HO TENS : BIRRAS AMB AMICS";
+    } else {
+        transmission007.pause();
+        rf007Link.textContent = "▶ ALLÍ HO TENS : BIRRAS AMB AMICS";
+    }
+}
+
+rf007Link.addEventListener("click", function(e){
+    e.preventDefault();
+    playPauseRF007();
+});
+
+transmission007.addEventListener("ended", function(){
+    hideGlobalProgress();
+    rf007Link.textContent = "▶ ALLÍ HO TENS : BIRRAS AMB AMICS";
+});
+
+transmission007.addEventListener("timeupdate", function(){
+    updateGlobalProgress(transmission007);
 });
 
 /* -------------------- */
