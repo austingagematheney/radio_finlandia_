@@ -242,6 +242,26 @@
 
 </div>
 
+<div class="entry">
+
+    <span class="date">
+        2026.07.28.
+    </span>
+
+    <span class="rf-id">RF008</span>
+
+    <div>
+
+        <a href="#" id="rf008" class="transmission">
+            ▶ DJ GUANTAZO : SHOUTS OUT TA MY BOX FAN
+        </a>
+
+        <span class="info-trigger" data-src="tracklists/RF008_BOX_FAN.txt">[info]</span>
+
+    </div>
+
+</div>
+
 </section>
 
 <script>
@@ -749,6 +769,41 @@ transmission007.addEventListener("ended", function(){
 
 transmission007.addEventListener("timeupdate", function(){
     updateGlobalProgress(transmission007);
+});
+
+/* -------------------- */
+/* RF008 PLAYER */
+/* -------------------- */
+
+const transmission008 = new Audio("audio/RF008_BOX_FAN.mp3");
+const rf008Link       = document.getElementById("rf008");
+
+function playPauseRF008(){
+    activeTransmission = transmission008;
+    activeToggle = playPauseRF008;
+
+    if(transmission008.paused){
+        transmission008.play();
+        showGlobalProgress();
+        rf008Link.textContent = "▌▌ DJ GUANTAZO : SHOUTS OUT TA MY BOX FAN";
+    } else {
+        transmission008.pause();
+        rf008Link.textContent = "▶ DJ GUANTAZO : SHOUTS OUT TA MY BOX FAN";
+    }
+}
+
+rf008Link.addEventListener("click", function(e){
+    e.preventDefault();
+    playPauseRF008();
+});
+
+transmission008.addEventListener("ended", function(){
+    hideGlobalProgress();
+    rf008Link.textContent = "▶ DJ GUANTAZO : SHOUTS OUT TA MY BOX FAN";
+});
+
+transmission008.addEventListener("timeupdate", function(){
+    updateGlobalProgress(transmission008);
 });
 
 /* -------------------- */
