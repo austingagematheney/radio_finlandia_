@@ -262,6 +262,24 @@
 
 </div>
 
+<div class="entry entry-secret" id="rf009-entry">
+
+    <span class="date">——</span>
+
+    <span class="rf-id">RF009</span>
+
+    <div>
+
+        <a href="#" id="rf009" class="transmission transmission-secret">
+            ▶ UNDERRATED - PUNK
+        </a>
+
+        <span class="info-trigger" data-src="tracklists/RF009_UNDERRATED_PUNK.txt">[info]</span>
+
+    </div>
+
+</div>
+
 </section>
 
 <script>
@@ -453,8 +471,6 @@ scheduleExplosion();
 /* TERMINAL */
 /* -------------------- */
 
-const ACCESS_CODE = "666";
-
 const terminalOverlay  = document.getElementById("terminal-overlay");
 const terminalLines    = document.getElementById("terminal-lines");
 const terminalInput    = document.getElementById("terminal-input");
@@ -462,8 +478,16 @@ const terminalInputRow = document.getElementById("terminal-input-row");
 const rfTrigger        = document.getElementById("rf-trigger");
 const rf002Entry       = document.getElementById("rf002-entry");
 const rf002Link        = document.getElementById("rf002");
+const rf009Entry       = document.getElementById("rf009-entry");
+const rf009Link        = document.getElementById("rf009");
 
 const transmission002  = new Audio("audio/RF002_PILOTO.mp3");
+const transmission009  = new Audio("audio/RF009_UNDERRATED_PUNK.mp3");
+
+const ACCESS_CODES = {
+    "666": revealRF002,
+    "420": revealRF009
+};
 
 function addLine(text, delay){
     setTimeout(function(){
@@ -525,13 +549,14 @@ terminalInput.addEventListener("keydown", function(e){
     terminalInput.value = "";
     terminalInputRow.style.display = "none";
 
-    if(attempt === ACCESS_CODE.toUpperCase()){
+    const reveal = ACCESS_CODES[attempt];
+    if(reveal){
         addLine("", 200);
         addLine("ACCESO CONCEDIDO.", 500);
         addLine("TRANSMISIÓN DESBLOQUEADA.", 900);
         setTimeout(function(){
             closeTerminal();
-            revealRF002();
+            reveal();
         }, 2200);
     } else {
         addLine("", 200);
@@ -553,6 +578,17 @@ function revealRF002(){
         requestAnimationFrame(function(){
             rf002Entry.style.transition = "opacity 1.2s";
             rf002Entry.style.opacity = "1";
+        });
+    });
+}
+
+function revealRF009(){
+    rf009Entry.style.opacity = "0";
+    rf009Entry.style.display = "grid";
+    requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+            rf009Entry.style.transition = "opacity 1.2s";
+            rf009Entry.style.opacity = "1";
         });
     });
 }
@@ -804,6 +840,45 @@ transmission008.addEventListener("ended", function(){
 
 transmission008.addEventListener("timeupdate", function(){
     updateGlobalProgress(transmission008);
+});
+
+/* -------------------- */
+/* RF009 PLAYER */
+/* -------------------- */
+
+function playPauseRF009(){
+    activeTransmission = transmission009;
+    activeToggle = playPauseRF009;
+
+    if(transmission009.paused){
+        transmission009.play();
+        showGlobalProgress();
+        rf009Link.textContent = "▌▌ UNDERRATED - PUNK";
+    } else {
+        transmission009.pause();
+        rf009Link.textContent = "▶ UNDERRATED - PUNK";
+    }
+}
+
+rf009Link.addEventListener("click", function(e){
+    e.preventDefault();
+    playPauseRF009();
+});
+
+transmission009.addEventListener("ended", function(){
+    hideGlobalProgress();
+    rf009Link.textContent = "▶ UNDERRATED - PUNK";
+    rf009Entry.style.transition = "opacity 2s";
+    rf009Entry.style.opacity = "0";
+    setTimeout(function(){
+        rf009Entry.style.display = "none";
+        rf009Entry.style.transition = "";
+        rf009Entry.style.opacity = "";
+    }, 2000);
+});
+
+transmission009.addEventListener("timeupdate", function(){
+    updateGlobalProgress(transmission009);
 });
 
 /* -------------------- */
