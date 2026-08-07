@@ -262,19 +262,41 @@
 
 </div>
 
-<div class="entry entry-secret" id="rf009-entry">
+<div class="entry">
 
-    <span class="date">——</span>
+    <span class="date">
+        2026.07.30.
+    </span>
 
     <span class="rf-id">RF009</span>
 
     <div>
 
-        <a href="#" id="rf009" class="transmission transmission-secret">
+        <a href="#" id="rf009" class="transmission">
             ▶ UNDERRATED - PUNK
         </a>
 
         <span class="info-trigger" data-src="tracklists/RF009_UNDERRATED_PUNK.txt">[info]</span>
+
+    </div>
+
+</div>
+
+<div class="entry">
+
+    <span class="date">
+        2026.08.07.
+    </span>
+
+    <span class="rf-id">RF010</span>
+
+    <div>
+
+        <a href="#" id="rf010" class="transmission">
+            ▶ ALLÍ HO TENS : DREAMS
+        </a>
+
+        <span class="info-trigger" data-src="tracklists/RF010_DREAMS.txt">[info]</span>
 
     </div>
 
@@ -478,15 +500,11 @@ const terminalInputRow = document.getElementById("terminal-input-row");
 const rfTrigger        = document.getElementById("rf-trigger");
 const rf002Entry       = document.getElementById("rf002-entry");
 const rf002Link        = document.getElementById("rf002");
-const rf009Entry       = document.getElementById("rf009-entry");
-const rf009Link        = document.getElementById("rf009");
 
 const transmission002  = new Audio("audio/RF002_PILOTO.mp3");
-const transmission009  = new Audio("audio/RF009_UNDERRATED_PUNK.mp3");
 
 const ACCESS_CODES = {
-    "666": revealRF002,
-    "420": revealRF009
+    "666": revealRF002
 };
 
 function addLine(text, delay){
@@ -578,17 +596,6 @@ function revealRF002(){
         requestAnimationFrame(function(){
             rf002Entry.style.transition = "opacity 1.2s";
             rf002Entry.style.opacity = "1";
-        });
-    });
-}
-
-function revealRF009(){
-    rf009Entry.style.opacity = "0";
-    rf009Entry.style.display = "grid";
-    requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-            rf009Entry.style.transition = "opacity 1.2s";
-            rf009Entry.style.opacity = "1";
         });
     });
 }
@@ -846,6 +853,9 @@ transmission008.addEventListener("timeupdate", function(){
 /* RF009 PLAYER */
 /* -------------------- */
 
+const transmission009 = new Audio("audio/RF009_UNDERRATED_PUNK.mp3");
+const rf009Link        = document.getElementById("rf009");
+
 function playPauseRF009(){
     activeTransmission = transmission009;
     activeToggle = playPauseRF009;
@@ -868,17 +878,45 @@ rf009Link.addEventListener("click", function(e){
 transmission009.addEventListener("ended", function(){
     hideGlobalProgress();
     rf009Link.textContent = "▶ UNDERRATED - PUNK";
-    rf009Entry.style.transition = "opacity 2s";
-    rf009Entry.style.opacity = "0";
-    setTimeout(function(){
-        rf009Entry.style.display = "none";
-        rf009Entry.style.transition = "";
-        rf009Entry.style.opacity = "";
-    }, 2000);
 });
 
 transmission009.addEventListener("timeupdate", function(){
     updateGlobalProgress(transmission009);
+});
+
+/* -------------------- */
+/* RF010 PLAYER */
+/* -------------------- */
+
+const transmission010 = new Audio("audio/RF010_DREAMS.mp3");
+const rf010Link        = document.getElementById("rf010");
+
+function playPauseRF010(){
+    activeTransmission = transmission010;
+    activeToggle = playPauseRF010;
+
+    if(transmission010.paused){
+        transmission010.play();
+        showGlobalProgress();
+        rf010Link.textContent = "▌▌ ALLÍ HO TENS : DREAMS";
+    } else {
+        transmission010.pause();
+        rf010Link.textContent = "▶ ALLÍ HO TENS : DREAMS";
+    }
+}
+
+rf010Link.addEventListener("click", function(e){
+    e.preventDefault();
+    playPauseRF010();
+});
+
+transmission010.addEventListener("ended", function(){
+    hideGlobalProgress();
+    rf010Link.textContent = "▶ ALLÍ HO TENS : DREAMS";
+});
+
+transmission010.addEventListener("timeupdate", function(){
+    updateGlobalProgress(transmission010);
 });
 
 /* -------------------- */
