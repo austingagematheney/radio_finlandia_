@@ -302,6 +302,26 @@
 
 </div>
 
+<div class="entry">
+
+    <span class="date">
+        2026.08.19.
+    </span>
+
+    <span class="rf-id">RF011</span>
+
+    <div>
+
+        <a href="#" id="rf011" class="transmission">
+            ▶ DAGGERS DRAWN AT INSURRECTION'S FAILING LIGHT BROUGHT TO YOU BY DOUGIE
+        </a>
+
+        <span class="info-trigger" data-src="tracklists/RF011_DAGGERS_DRAWN.txt">[info]</span>
+
+    </div>
+
+</div>
+
 </section>
 
 <script>
@@ -917,6 +937,41 @@ transmission010.addEventListener("ended", function(){
 
 transmission010.addEventListener("timeupdate", function(){
     updateGlobalProgress(transmission010);
+});
+
+/* -------------------- */
+/* RF011 PLAYER */
+/* -------------------- */
+
+const transmission011 = new Audio("audio/RF011_DAGGERS_DRAWN.mp3");
+const rf011Link        = document.getElementById("rf011");
+
+function playPauseRF011(){
+    activeTransmission = transmission011;
+    activeToggle = playPauseRF011;
+
+    if(transmission011.paused){
+        transmission011.play();
+        showGlobalProgress();
+        rf011Link.textContent = "▌▌ DAGGERS DRAWN AT INSURRECTION'S FAILING LIGHT BROUGHT TO YOU BY DOUGIE";
+    } else {
+        transmission011.pause();
+        rf011Link.textContent = "▶ DAGGERS DRAWN AT INSURRECTION'S FAILING LIGHT BROUGHT TO YOU BY DOUGIE";
+    }
+}
+
+rf011Link.addEventListener("click", function(e){
+    e.preventDefault();
+    playPauseRF011();
+});
+
+transmission011.addEventListener("ended", function(){
+    hideGlobalProgress();
+    rf011Link.textContent = "▶ DAGGERS DRAWN AT INSURRECTION'S FAILING LIGHT BROUGHT TO YOU BY DOUGIE";
+});
+
+transmission011.addEventListener("timeupdate", function(){
+    updateGlobalProgress(transmission011);
 });
 
 /* -------------------- */
