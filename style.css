@@ -49,47 +49,59 @@ body{
 
     width:320px;
 
-    opacity:.08;
+    opacity:0;
 
     filter:
     grayscale(100%)
     blur(2px);
+
+    transition:opacity 2.5s ease-in-out;
 }
 
-.memory1{
+.memory.visible{
+    opacity:.08;
+}
+
+.slot1{
     top:5%;
     left:5%;
     animation:drift1 120s ease-in-out infinite;
 }
 
-.memory2{
+.slot2{
     top:15%;
     right:8%;
     animation:drift2 140s ease-in-out infinite;
 }
 
-.memory3{
+.slot3{
     top:55%;
     left:10%;
     animation:drift3 160s ease-in-out infinite;
 }
 
-.memory4{
+.slot4{
     top:60%;
     right:5%;
     animation:drift1 180s ease-in-out infinite;
 }
 
-.memory5{
+.slot5{
     top:35%;
     left:40%;
     animation:drift2 200s ease-in-out infinite;
 }
 
-.memory6{
+.slot6{
     top:75%;
     left:55%;
     animation:drift3 220s ease-in-out infinite;
+}
+
+.slot7{
+    top:25%;
+    left:70%;
+    animation:drift1 150s ease-in-out infinite;
 }
 
 @keyframes drift1{

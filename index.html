@@ -19,14 +19,15 @@
     <div class="global-progress-time" id="global-progress-time">0:00</div>
 </div>
 
-<div class="memory-field">
+<div class="memory-field" id="memory-field">
 
-    <img src="photos/01.JPG" class="memory memory1">
-    <img src="photos/02.JPG" class="memory memory2">
-    <img src="photos/03.JPG" class="memory memory3">
-    <img src="photos/04.JPG" class="memory memory4">
-    <img src="photos/05.JPG" class="memory memory5">
-    <img src="photos/06.JPG" class="memory memory6">
+    <img class="memory memory-slot slot1">
+    <img class="memory memory-slot slot2">
+    <img class="memory memory-slot slot3">
+    <img class="memory memory-slot slot4">
+    <img class="memory memory-slot slot5">
+    <img class="memory memory-slot slot6">
+    <img class="memory memory-slot slot7">
 
 </div>
 
@@ -325,6 +326,69 @@
 </section>
 
 <script>
+
+/* -------------------- */
+/* FLOATING MEMORIES */
+/* -------------------- */
+
+const memoryField = document.getElementById("memory-field");
+const memorySlots = Array.from(memoryField.querySelectorAll(".memory-slot"));
+
+const MEMORY_PHOTO_COUNT = 33;
+const MEMORY_DURATION    = 30000;
+const MEMORY_FADE        = 2500;
+
+const memoryPhotos = Array.from(
+    { length: MEMORY_PHOTO_COUNT },
+    function(_, i){
+        return "photos/" + String(i + 1).padStart(2, "0") + ".JPG";
+    }
+);
+
+function shuffle(arr){
+    const a = arr.slice();
+    for(let i = a.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+    return a;
+}
+
+let memoryBag = shuffle(memoryPhotos);
+
+function drawMemoryPhoto(){
+    if(memoryBag.length === 0) memoryBag = shuffle(memoryPhotos);
+    return memoryBag.pop();
+}
+
+function fadeInSlot(slot){
+    requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+            slot.classList.add("visible");
+        });
+    });
+}
+
+function cycleMemorySlot(slot){
+    slot.classList.remove("visible");
+    setTimeout(function(){
+        slot.src = drawMemoryPhoto();
+        fadeInSlot(slot);
+    }, MEMORY_FADE);
+}
+
+memorySlots.forEach(function(slot, index){
+    slot.src = drawMemoryPhoto();
+    fadeInSlot(slot);
+
+    setTimeout(function(){
+        setInterval(function(){
+            cycleMemorySlot(slot);
+        }, MEMORY_DURATION);
+    }, index * (MEMORY_DURATION / memorySlots.length));
+});
 
 /* -------------------- */
 /* GLOBAL PROGRESS BAR */
